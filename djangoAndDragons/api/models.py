@@ -21,7 +21,7 @@ class Character(models.Model):
     max_hit_points = models.IntegerField()
     temp_hit_points = models.IntegerField()
     current_hit_points = models.IntegerField()
-    campaign = models.ManyToManyField(Campaign, blank=True, null=True)
+    campaign = models.ManyToManyField(Campaign, blank=True)
 
     def __str__(self):
         return self.name

@@ -21,14 +21,17 @@ class CreatureSerializer(serializers.ModelSerializer):
 
 
 class CharacterSerializer(serializers.ModelSerializer):
-    campaign = serializers.PrimaryKeyRelatedField(read_only=True, many=True)
+    campaign = serializers.PrimaryKeyRelatedField(read_only=True, many=True, required=False)
 
     def create(self, validated_data):
-        campaigns = self.initial_data['campaign']
-        campaigns_instances = [Campaign.objects.get(pk=campaign['id']) for campaign in campaigns]
-        character = Character.objects.create(**validated_data)
-        character.campaign.set(campaigns_instances)
-        return character
+        try:
+            campaigns = self.initial_data['campaign']
+            campaigns_instances = [Campaign.objects.get(pk=campaign['id']) for campaign in campaigns]
+            character = Character.objects.create(**validated_data)
+            character.campaign.set(campaigns_instances)
+            return character
+        except (KeyError, Campaign.DoesNotExist):
+            return validated_data
 
     class Meta:
         model = Character
