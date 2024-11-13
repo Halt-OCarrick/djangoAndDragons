@@ -3,6 +3,7 @@ from django.urls import path
 from .views import *
 
 
+# TODO: remove this comment
 urlpatterns = [
     path('creatures/', get_creatures, name='get_creatures'),
     path('creatures/create/', post_creature, name='post_creature'),
