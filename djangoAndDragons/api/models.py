@@ -1,13 +1,15 @@
 from django.db import models
+from django.utils import timezone
 
 
-# Create your models here.
 class Campaign(models.Model):
     name = models.CharField(max_length=50)
-    notes = models.TextField()
+    private_notes = models.TextField()
+    public_notes = models.TextField()
+    date_created = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f'{self.name} Campaign'
+        return f'{self.name} Campaign\nStart date: {self.date_created}'
 
 
 class Character(models.Model):
@@ -33,6 +35,8 @@ class Encounter(models.Model):
     summary = models.TextField()
     tactics = models.TextField()
     treasure = models.TextField()
+    current_round = models.IntegerField(default=1)
+    current_turn = models.IntegerField(default=1)
 
     def __str__(self):
         return self.name
@@ -51,6 +55,10 @@ class Creature(models.Model):
 class Event(models.Model):
     name = models.CharField(max_length=50)
     init_count = models.IntegerField()
+    max_hit_points = models.IntegerField()
+    current_hit_points = models.IntegerField()
+    armor_class = models.IntegerField()
+    speed = models.CharField(max_length=20)
     notes = models.TextField()
     encounter = models.ManyToManyField(Encounter)
 
